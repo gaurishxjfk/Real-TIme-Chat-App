@@ -1,0 +1,51 @@
+[
+    {
+      "id": "msg1",
+      "sender": "Krishna",
+      "receiver": "Ravi",
+      "message": "Hey Ravi! How's it going?",
+      "timestamp": "2024-08-15T10:30:00Z",
+      "status": "delivered"
+    },
+    {
+      "id": "msg2",
+      "sender": "Ravi",
+      "receiver": "Krishna",
+      "message": "Hey Krishna! I'm good, thanks. What about you?",
+      "timestamp": "2024-08-15T10:31:00Z",
+      "status": "delivered"
+    },
+    {
+      "id": "msg3",
+      "sender": "Krishna",
+      "receiver": "Ravi",
+      "message": "I'm doing well too. Are you free for a call later today?",
+      "timestamp": "2024-08-15T10:32:30Z",
+      "status": "seen"
+    },
+    {
+      "id": "msg4",
+      "sender": "Ravi",
+      "receiver": "Krishna",
+      "message": "Sure, let's catch up around 3 PM.",
+      "timestamp": "2024-08-15T10:33:45Z",
+      "status": "seen"
+    },
+    {
+      "id": "msg5",
+      "sender": "Krishna",
+      "receiver": "Ravi",
+      "message": "Great, talk to you then!",
+      "timestamp": "2024-08-15T10:34:10Z",
+      "status": "seen"
+    },
+    {
+      "id": "msg6",
+      "sender": "Krishna",
+      "receiver": "Ravi",
+      "message": "I'm doing well too. Are you free for a call later today?",
+      "timestamp": "2024-08-16T10:34:10Z",
+      "status": "seen"
+    }
+  ]
+  
