@@ -4,10 +4,13 @@ import UserCard from "./UserCard";
 const totalChats = Array.from(new Array(12)).map((_, j) => j);
 const Sidebar = () => {
   return (
-    <div className=" w-[30%]  bg-white relative">
-      <Search />
-      <Filter />
-      <div className="relative flex flex-col gap-[1px] custom-scrollbar overflow-y-scroll h-[90vh] bg-slate-200 pt-12">
+    <div className=" md:block w-[30%]  bg-white relative">
+      <div className="bg-white flex sm:flex-col">
+        <Search />
+        <Filter />
+      </div>
+
+      <div className="relative flex flex-col gap-[1px] custom-scrollbar scroll-smooth overflow-y-scroll h-[90vh] bg-slate-200 sm:pt-12">
         {totalChats.map((i) => (
           <UserCard key={i} id={i} />
         ))}
