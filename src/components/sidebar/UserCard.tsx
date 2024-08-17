@@ -1,10 +1,20 @@
 import { clsx } from "clsx";
-import { useState } from "react";
+import React, { useState } from "react";
+import { UserCardProps } from "../../types/types";
 
-const UserCard = ({id}: {id: number}) => {
-    const[toggel, setToggle] = useState(true)
+const UserCard: React.FC<UserCardProps> = ({
+  id,
+  username,
+  lastSeen,
+  onClick,
+}) => {
+  const lastSeenDate = new Date(lastSeen);
+  const currentDate = new Date();
+  const diffTime = Math.abs(currentDate.getTime() - lastSeenDate.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const [toggel, setToggle] = useState(true);
   return (
-    <div className="">
+    <div onClick={onClick}>
       <div
         className={clsx(
           "flex justify-center  bg-white hover:bg-gray-100 gap-3 p-4 cursor-pointer",
@@ -12,12 +22,16 @@ const UserCard = ({id}: {id: number}) => {
         )}
         onClick={() => setToggle(!toggel)}
       >
-        <img src={`/user/user_${id % 2 === 0 ? 2 : 1}.svg`} alt="user 1 img" className="h-12 w-12" />
+        <img
+          src={`/user/user_${id % 2 === 0 ? 2 : 1}.svg`}
+          alt="user 1 img"
+          className="h-12 w-12"
+        />
         <div className="hidden md:flex flex-col">
           <div className="flex w-full gap-2 text-[16px]">
-            <h3 className="font-semibold">Krishna</h3>
+            <h3 className="font-semibold">{username}</h3>
             <h4 className="text-slate-400">
-              <span>•</span> 11 days
+              <span>•</span> {diffDays} days
             </h4>
           </div>
           <div>

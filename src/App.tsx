@@ -1,11 +1,23 @@
+import clsx from "clsx";
 import ChatLayout from "./components/chat_layout/ChatLayout";
 import Sidebar from "./components/sidebar/Sidebar";
+import Login from "./components/auth/Login";
+import { appStore } from "./store/store";
+import { useEffect } from "react";
 
 function App() {
+  const { fetchAllUsers, checkIfLoggedIn, isLoggedIn, selectedReceiver } =
+    appStore((state) => state);
+  useEffect(() => {
+    fetchAllUsers();
+    checkIfLoggedIn();
+  }, []);
+
   return (
-    <div className="bg-slate-200 flex">
+    <div className={clsx("bg-slate-200 flex", "")}>
+      {!isLoggedIn && <Login />}
       <Sidebar />
-      <ChatLayout />
+      {selectedReceiver && selectedReceiver.user_id && <ChatLayout />}
     </div>
   );
 }

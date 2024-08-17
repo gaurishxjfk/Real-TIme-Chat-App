@@ -9,7 +9,7 @@ const Filter = () => {
   return (
     <div
       className={clsx(
-        "sm:fixed bg-white py-4 w-[30%] z-50  ",
+        "sm:fixed bg-white py-4 w-[30%] z-30  ",
         "sm:border-t-[1px] sm:border-r-[1px] border-gray-300",
         "overflow-x-scroll scroll-smooth custom-scrollbar2 sm:mt-[10vh]"
       )}

@@ -5,7 +5,9 @@ const ChatInput = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [chatInp, setChatInp] = useState("");
-  const { addChat, chatData } = appStore((state) => state);
+  const { addChat, chatData, createMessage, selectedReceiver } = appStore(
+    (state) => state
+  );
 
   const handleAttachmentClick = () => {
     fileInputRef.current?.click();
@@ -18,24 +20,37 @@ const ChatInput = () => {
     }
   };
 
-  const sendChat = (
-    event:
-      | React.KeyboardEvent<HTMLInputElement>
-      | React.MouseEvent<HTMLButtonElement>
-  ) => {
-    if ("key" in event && event.key !== "Enter") {
-      return;
-    }
-    const chatObj = {
-      id: "msg" + chatData.length + 1,
-      sender: "Krishna",
-      receiver: "Ravi",
-      message: selectedFile ? selectedFile : chatInp,
-      media: selectedFile ? true : false,
-      timestamp: new Date().getTime.toString(),
-      status: "delivered",
-    };
-    addChat(chatObj);
+  const sendChat = () => {
+    const senderId = selectedReceiver?.user_id;
+    console.log("strid", senderId);
+
+    // const chatObj = {
+    //   id: "msg" + chatData.length + 1,
+    //   sender: "Krishna",
+    //   receiver: "Ravi",
+    //   message: selectedFile ? selectedFile : chatInp,
+    //   media: selectedFile ? true : false,
+    //   timestamp: new Date().getTime.toString(),
+    //   status: "delivered",
+    // };
+    
+      console.log(
+        {
+          senderId: senderId,
+          content: chatInp,
+          messageType: selectedFile ? "media" : "text",
+          mediaUrl: selectedFile ? selectedFile : null,
+        },
+        "adadA"
+      );
+      createMessage({
+        senderId: senderId,
+        content: selectedFile ? "NA" : chatInp,
+        messageType: selectedFile ? "media" : "text",
+        mediaUrl: selectedFile ? selectedFile : null,
+      });
+  
+    // addChat(chatObj);
     setChatInp("");
   };
   return (
@@ -68,7 +83,7 @@ const ChatInput = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setChatInp(e.target?.value)
             }
-            onKeyDown={sendChat}
+            onKeyDown={(e) => "key" in e && e.key === "Enter" && sendChat}
           />
         )}
 
