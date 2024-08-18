@@ -1,38 +1,103 @@
 import { create } from "zustand";
 import { AppState } from "../types/types";
-import ChatData from "./ChatData.json";
 
-export const appStore = create<AppState>()((set) => ({
-  chatData: [...ChatData],
+export const appStore = create<AppState>()((set, get) => ({
+  chatData: [],
   addChat: (chat) => set((state) => ({ chatData: [...state.chatData, chat] })),
   loading: false,
   userData: [],
   selectedReceiver: null,
   error: null,
   isLoggedIn: false,
-
+  loggedInUser: null,
   selectReceiver: (user) => {
     set({ selectedReceiver: user });
   },
 
-  //createMessage 
+  //createMessage
   createMessage: async (msgObj) => {
-    const { senderId, content, messageType, mediaUrl } = msgObj;
+    const { senderId, recieverId, content, messageType, mediaUrl } = msgObj;
     set({ loading: true, error: null });
     try {
-      const response = await fetch("http://localhost:3000/users/createmessage", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ senderId, content, messageType, mediaUrl }),
-      });
+      const response = await fetch(
+        "http://localhost:3000/users/createmessage",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            senderId,
+            recieverId,
+            content,
+            messageType,
+            mediaUrl,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("message creation failed");
       }
 
+      const fetchParticipantMessage = get().fetchParticipantMessage;
+      if (senderId && recieverId)
+        await fetchParticipantMessage({ senderId, recieverId });
+
       set({ loading: false });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      set({ loading: false, error: error });
+    }
+  },
+
+  //fetch message
+  fetchParticipantMessage: async (userIds) => {
+    const { senderId, recieverId } = userIds;
+    set({ loading: true, error: null });
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/fetchchats/${senderId}/${recieverId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("message creation failed");
+      }
+      const chatsData = await response.json();
+      console.log(chatsData);
+      set({ loading: false, chatData: chatsData });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      set({ loading: false, error: error });
+    }
+  },
+
+  getParticipants: async (userId) => {
+    const senderId = userId;
+    set({ loading: true, error: null });
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/fetchparticipants/${senderId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("getting participants failed");
+      }
+      const participants = await response.json();
+      console.log(participants);
+      set({ loading: false, userData: participants });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       set({ loading: false, error: error });
@@ -85,7 +150,7 @@ export const appStore = create<AppState>()((set) => ({
       const user = await response.json();
       localStorage.setItem("userObj", JSON.stringify(user));
 
-      set({ loading: false, isLoggedIn: true });
+      set({ loading: false, isLoggedIn: true, loggedInUser: user });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log("rairyad", error);
@@ -96,7 +161,7 @@ export const appStore = create<AppState>()((set) => ({
   checkIfLoggedIn: () => {
     const userString = localStorage.getItem("userObj");
     const user = userString ? JSON.parse(userString) : null;
-    set({ isLoggedIn: Boolean(user?.id) });
+    set({ isLoggedIn: Boolean(user?.id), loggedInUser: user });
   },
 
   //Fetch All Users

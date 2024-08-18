@@ -1,13 +1,31 @@
+import { useEffect } from "react";
 import { appStore } from "../../store/store";
 import Filter from "./Filter";
 import Search from "./Search";
 import UserCard from "./UserCard";
 // const totalChats = Array.from(new Array(12)).map((_, j) => j);
 const Sidebar = () => {
-  const { userData, selectReceiver } = appStore((state) => state);
+  const {
+    userData,
+    selectReceiver,
+    loggedInUser,
+    getParticipants,
+    checkIfLoggedIn,
+  } = appStore((state) => state);
+
+  useEffect(() => {
+    checkIfLoggedIn();
+  }, []);
+
+  useEffect(() => {
+    console.log("dog",loggedInUser)
+    if (loggedInUser && loggedInUser?.id) {
+      getParticipants(loggedInUser.id);
+    }
+  }, [loggedInUser]);
 
   return (
-    <div className=" md:block w-[30%]  bg-white relative">
+    <div className=" md:block w-[30%]  bg-white relative h-[40%]">
       <div className="bg-white flex sm:flex-col">
         <Search />
         <Filter />
@@ -21,7 +39,7 @@ const Sidebar = () => {
               id={j}
               username={user.username}
               lastSeen={user.last_active_at}
-              onClick = {() => selectReceiver(user)}
+              onClick={() => selectReceiver(user)}
             />
           ))}
       </div>

@@ -1,11 +1,12 @@
 export interface ChatObject {
-  id: string;
-  sender: string;
-  receiver: string;
-  message: string;
-  media: boolean;
-  timestamp: string | Date;
-  status: string;
+  messageId: string;
+  senderId: string;
+  content: string;
+  messageType: string;
+  mediaUrl: string | null;
+  createdAt: string | Date;
+  isRead: boolean;
+  isTyping: boolean;
 }
 
 export interface RegisterUserData {
@@ -21,26 +22,43 @@ export interface LoginrUserData {
 
 export interface Users {
   username: string;
-  email: string;
+  email?: string;
   user_id: string;
   status: string;
   last_active_at: Date;
 }
 
 export interface AppState {
-  chatData: ChatObject[];
+  chatData: [] | ChatObject[];
   addChat: (chat: ChatObject) => void;
-  userData: Users[];
+  userData: ParticipantObj[];
   loading: boolean;
   isLoggedIn: boolean;
-  selectedReceiver: Users | null;
+  selectedReceiver: ParticipantObj | null;
   error: string | null;
+  loggedInUser: null | ParticipantObj;
   registerUser: (userData: RegisterUserData) => Promise<void>;
   loginUser: (userData: LoginrUserData) => Promise<void>;
   fetchAllUsers: () => Promise<void>;
   checkIfLoggedIn: () => void;
   selectReceiver: (user: Users) => void;
   createMessage: (msgObj: CreateMessageObj) => Promise<void>;
+  fetchParticipantMessage: (userIds: UserIDs) => Promise<void>;
+  getParticipants: (userId : string) => Promise<void>;
+}
+
+
+export interface UserIDs {
+  senderId: string;
+  recieverId: string;
+}
+
+export interface ParticipantObj {
+  username: string,
+  user_id: string,
+  id?: string,
+  status: string,
+  last_active_at:  Date,
 }
 
 export interface UserCardProps {
@@ -51,8 +69,15 @@ export interface UserCardProps {
 }
 
 export interface CreateMessageObj {
-  senderId: string;
+  senderId: string | undefined;
+  recieverId: string | undefined;
   content: string;
   messageType: string;
   mediaUrl: string | null;
+}
+
+export interface LoggedInUser {
+  username: string;
+  email: string;
+  id: string;
 }

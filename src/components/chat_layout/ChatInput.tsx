@@ -5,9 +5,13 @@ const ChatInput = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [chatInp, setChatInp] = useState("");
-  const { addChat, chatData, createMessage, selectedReceiver } = appStore(
-    (state) => state
-  );
+  const {
+    createMessage,
+    selectedReceiver,
+    loggedInUser,
+    fetchParticipantMessage,
+    chatData
+  } = appStore((state) => state);
 
   const handleAttachmentClick = () => {
     fileInputRef.current?.click();
@@ -21,40 +25,27 @@ const ChatInput = () => {
   };
 
   const sendChat = () => {
-    const senderId = selectedReceiver?.user_id;
-    console.log("strid", senderId);
-
-    // const chatObj = {
-    //   id: "msg" + chatData.length + 1,
-    //   sender: "Krishna",
-    //   receiver: "Ravi",
-    //   message: selectedFile ? selectedFile : chatInp,
-    //   media: selectedFile ? true : false,
-    //   timestamp: new Date().getTime.toString(),
-    //   status: "delivered",
-    // };
-    
-      console.log(
-        {
-          senderId: senderId,
-          content: chatInp,
-          messageType: selectedFile ? "media" : "text",
-          mediaUrl: selectedFile ? selectedFile : null,
-        },
-        "adadA"
-      );
+    const recieverId = selectedReceiver?.user_id;
+    if (recieverId && loggedInUser) {
       createMessage({
-        senderId: senderId,
+        senderId: loggedInUser.id,
+        recieverId: recieverId,
         content: selectedFile ? "NA" : chatInp,
         messageType: selectedFile ? "media" : "text",
         mediaUrl: selectedFile ? selectedFile : null,
       });
-  
-    // addChat(chatObj);
-    setChatInp("");
+      if (loggedInUser?.id && selectedReceiver?.user_id) {
+        fetchParticipantMessage({
+          senderId: loggedInUser.id,
+          recieverId: selectedReceiver?.user_id,
+        });
+      }
+      setChatInp("");
+    }
   };
+console.log(chatData)
   return (
-    <div className="bg-white p-2 flex items-center justify-center relative border-t">
+    <div className="bg-white p-2 flex items-center justify-center  border-t">
       <div className="bg-gray-200 relative w-[95%] min-h-[6vh] flex items-center justify-start rounded-lg">
         {selectedFile ? (
           selectedFile.includes("video") ? (
@@ -83,7 +74,7 @@ const ChatInput = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setChatInp(e.target?.value)
             }
-            onKeyDown={(e) => "key" in e && e.key === "Enter" && sendChat}
+            onKeyDown={(e) => "key" in e && e.key === "Enter" && sendChat()}
           />
         )}
 
