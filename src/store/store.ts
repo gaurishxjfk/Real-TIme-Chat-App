@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { AppState } from "../types/types";
+import { AppState, ChatObject } from "../types/types";
 
 export const appStore = create<AppState>()((set, get) => ({
   chatData: [],
@@ -11,7 +11,7 @@ export const appStore = create<AppState>()((set, get) => ({
   isLoggedIn: false,
   loggedInUser: null,
   selectReceiver: (user) => {
-    set({ selectedReceiver: user });
+    set({ selectedReceiver: user, chatData: [] });
   },
 
   //createMessage
@@ -51,13 +51,17 @@ export const appStore = create<AppState>()((set, get) => ({
     }
   },
 
+  
+
   //fetch message
-  fetchParticipantMessage: async (userIds) => {
+  fetchParticipantMessage: async (userIds, limit) => {
     const { senderId, recieverId } = userIds;
     set({ loading: true, error: null });
     try {
       const response = await fetch(
-        `http://localhost:3000/users/fetchchats/${senderId}/${recieverId}`,
+        `http://localhost:3000/users/fetchchats/${senderId}/${recieverId}?limit=${
+          limit || undefined
+        }`,
         {
           method: "GET",
           headers: {
@@ -71,7 +75,23 @@ export const appStore = create<AppState>()((set, get) => ({
       }
       const chatsData = await response.json();
       console.log(chatsData);
-      set({ loading: false, chatData: chatsData });
+
+    
+
+      set((state) => {
+        // Filter out any duplicate chats based on a unique identifier, such as 'id'
+        const newChats = chatsData.filter(
+          (newChat: ChatObject) =>
+            !state.chatData.some(
+              (existingChat) => existingChat.messageId === newChat.messageId
+            )
+        );
+
+        return {
+          loading: false,
+          chatData: [ ...newChats,...state.chatData,],
+        };
+      });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       set({ loading: false, error: error });

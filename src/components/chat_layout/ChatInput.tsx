@@ -34,12 +34,12 @@ const ChatInput = () => {
         messageType: selectedFile ? "media" : "text",
         mediaUrl: selectedFile ? selectedFile : null,
       });
-      if (loggedInUser?.id && selectedReceiver?.user_id) {
-        fetchParticipantMessage({
-          senderId: loggedInUser.id,
-          recieverId: selectedReceiver?.user_id,
-        });
-      }
+      // if (loggedInUser?.id && selectedReceiver?.user_id) {
+      //   fetchParticipantMessage({
+      //     senderId: loggedInUser.id,
+      //     recieverId: selectedReceiver?.user_id,
+      //   }, new Date());
+      // }
       setChatInp("");
     }
   };
