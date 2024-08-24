@@ -52,7 +52,7 @@ const ChatWindow = () => {
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     if (e.currentTarget.scrollTop === 0 && hasMore) {
-      //getMsgs();
+      getMsgs();
       console.log("TOPP Scoreee!!!");
       scrollToElementWithMargin(msgEndRef.current)
     }
