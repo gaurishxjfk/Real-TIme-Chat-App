@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { appStore } from "../../store/store";
 import { useEffect } from "react";
+import useListenMessages from "../../hooks/useListenMessage";
 
 const ChatWindow = () => {
   const { chatData, selectedReceiver, fetchParticipantMessage, loggedInUser } =
@@ -14,6 +15,8 @@ const ChatWindow = () => {
       });
     }
   }, [selectedReceiver]);
+  useListenMessages()
+  console.log(chatData)
 
   return (
     <div className="bg-white h-[80%] py-8 px-2 md:px-4 overflow-y-auto custom-scrollbar">
