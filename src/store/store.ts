@@ -10,39 +10,42 @@ export const appStore = create<AppState>()((set, get) => ({
   error: null,
   isLoggedIn: false,
   loggedInUser: null,
-  selectReceiver: (user) => {
+  lastCursor: null,
+
+  // on click of user, set user and load their conversation
+  selectReceiver: async (user) => {
+    const senderId = get().loggedInUser?.id;
+    const recieverId = user.user_id;
     set({ selectedReceiver: user });
+    set({ loading: true, chatData: [], lastCursor: null });
+    const fetchParticipantMessage = get().fetchParticipantMessage;
+    if (senderId && recieverId) {
+      await fetchParticipantMessage({ senderId, recieverId });
+    }
+    set({ loading: false });
   },
 
   //createMessage
-  createMessage: async (msgObj) => {
-    const { senderId, recieverId, content, messageType, mediaUrl } = msgObj;
+  createMessage: async (formData) => {
     set({ loading: true, error: null });
     try {
       const response = await fetch(
         "http://localhost:3000/users/createmessage",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            senderId,
-            recieverId,
-            content,
-            messageType,
-            mediaUrl,
-          }),
+          body: formData,
         }
       );
 
       if (!response.ok) {
         throw new Error("message creation failed");
       }
+      const chatsData = await response.json();
 
-      const fetchParticipantMessage = get().fetchParticipantMessage;
-      if (senderId && recieverId)
-        await fetchParticipantMessage({ senderId, recieverId });
+      set({
+        loading: false,
+        chatData: chatsData.body,
+      });
 
       set({ loading: false });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,11 +56,16 @@ export const appStore = create<AppState>()((set, get) => ({
 
   //fetch message
   fetchParticipantMessage: async (userIds) => {
+    const cursor = get().lastCursor; // Start with no cursor (first page)
+    let hasMore = true;
+    const limit = 15; // Number of messages to load per request
+
+    if (!hasMore) return;
     const { senderId, recieverId } = userIds;
     set({ loading: true, error: null });
     try {
       const response = await fetch(
-        `http://localhost:3000/users/fetchchats/${senderId}/${recieverId}`,
+        `http://localhost:3000/users/fetchchats/${senderId}/${recieverId}?limit=${limit}&cursor=${cursor}`,
         {
           method: "GET",
           headers: {
@@ -69,9 +77,15 @@ export const appStore = create<AppState>()((set, get) => ({
       if (!response.ok) {
         throw new Error("message creation failed");
       }
+
       const chatsData = await response.json();
-      console.log(chatsData);
-      set({ loading: false, chatData: chatsData });
+      hasMore = chatsData.hasMore;
+      const existingChats = cursor === null ? [] : get().chatData;
+      set({
+        loading: false,
+        chatData: [...chatsData.messages, ...existingChats],
+        lastCursor: chatsData.nextCursor,
+      });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       set({ loading: false, error: error });

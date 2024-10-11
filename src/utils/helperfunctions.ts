@@ -18,3 +18,15 @@ export function getLastSeenText(lastSeen: Date): string {
       return `${diffInWeeks} week${diffInWeeks !== 1 ? 's' : ''} ago`;
     }
   }
+
+  export function formatTo12HourTime(isoString: string | Date): string {
+    const date = new Date(isoString);
+  
+    // Format time in 12-hour format with AM/PM
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+  }
+  

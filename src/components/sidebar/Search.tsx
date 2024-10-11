@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 const Search = () => {
   return (
-    <div className="py-4 flex justify-center items-center sm:border-r-[1px] border-gray-300">
+    <div className="py-3 flex justify-center items-center ">
       <div
         className={clsx(
           "relative ",

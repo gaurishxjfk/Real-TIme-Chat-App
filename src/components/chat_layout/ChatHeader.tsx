@@ -8,7 +8,7 @@ const ChatHeader = () => {
     <>
       <div
         className={clsx(
-          "w-full bg-white flex p-4 gap-4 py-3 h-[10%]",
+          "w-full bg-white flex px-4 gap-4 py-2 ",
           "border-b-[1px] border-gray-300"
         )}
       >

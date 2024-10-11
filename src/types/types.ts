@@ -36,14 +36,15 @@ export interface AppState {
   isLoggedIn: boolean;
   selectedReceiver: ParticipantObj | null;
   error: string | null;
+  lastCursor: null | Date;
   loggedInUser: null | ParticipantObj;
   registerUser: (userData: RegisterUserData) => Promise<void>;
   loginUser: (userData: LoginrUserData) => Promise<void>;
   fetchAllUsers: () => Promise<void>;
   checkIfLoggedIn: () => void;
   selectReceiver: (user: Users) => void;
-  createMessage: (msgObj: CreateMessageObj) => Promise<void>;
-  fetchParticipantMessage: (userIds: UserIDs) => Promise<void>;
+  createMessage: (msgObj:  FormData) => Promise<void>;
+  fetchParticipantMessage: (userIds: UserIDs, limit?: number) => Promise<void>;
   getParticipants: (userId : string) => Promise<void>;
 }
 

@@ -3,15 +3,11 @@ import { appStore } from "../../store/store";
 
 const ChatInput = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<any | null>(null);
   const [chatInp, setChatInp] = useState("");
-  const {
-    createMessage,
-    selectedReceiver,
-    loggedInUser,
-    fetchParticipantMessage,
-    chatData
-  } = appStore((state) => state);
+  const { createMessage, selectedReceiver, loggedInUser } = appStore(
+    (state) => state
+  );
 
   const handleAttachmentClick = () => {
     fileInputRef.current?.click();
@@ -20,43 +16,35 @@ const ChatInput = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedFile(URL.createObjectURL(file));
+      setSelectedFile(file);
     }
   };
 
   const sendChat = () => {
+    if (!selectedFile && chatInp.length < 1) return;
     const recieverId = selectedReceiver?.user_id;
-    if (recieverId && loggedInUser) {
-      createMessage({
-        senderId: loggedInUser.id,
-        recieverId: recieverId,
-        content: selectedFile ? "NA" : chatInp,
-        messageType: selectedFile ? "media" : "text",
-        mediaUrl: selectedFile ? selectedFile : null,
-      });
-      if (loggedInUser?.id && selectedReceiver?.user_id) {
-        fetchParticipantMessage({
-          senderId: loggedInUser.id,
-          recieverId: selectedReceiver?.user_id,
-        });
-      }
+    if (recieverId && loggedInUser && loggedInUser?.id) {
+      const formData = new FormData();
+      formData.append("senderId", loggedInUser?.id);
+      formData.append("recieverId", recieverId);
+      formData.append("content", selectedFile ? "NA" : chatInp);
+      formData.append("messageType", selectedFile ? "media" : "text");
+      formData.append("image", selectedFile ? selectedFile : null);
+      createMessage(formData);
       setChatInp("");
+      setSelectedFile(null);
     }
   };
-console.log(chatData)
+  const fileURL = selectedFile ? URL.createObjectURL(selectedFile) : null;
   return (
-    <div className="bg-white p-2 flex items-center justify-center  border-t">
+    <div className="bg-white p-2 py-3 flex items-center justify-center  border-t">
       <div className="bg-gray-200 relative w-[95%] min-h-[6vh] flex items-center justify-start rounded-lg">
-        {selectedFile ? (
-          selectedFile.includes("video") ? (
-            <video
-              src={selectedFile}
-              controls
-              className="max-w-full max-h-64"
-            />
+        {selectedFile && fileURL ? (
+          fileURL.includes("video") ? (
+            <video src={fileURL} controls className="max-w-full max-h-64" />
           ) : (
             <div className="relative m-2 ">
-              <img src={selectedFile} alt="Selected" className="max-h-32" />
+              <img src={fileURL} alt="Selected" className="max-h-32" />
               <button
                 onClick={() => setSelectedFile(null)}
                 className="absolute -top-2 -right-2 bg-gray-50 rounded-full w-6 h-6 "

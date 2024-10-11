@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: 'rgb(220, 74, 45)', // Replace with your desired color code
+        primary: 'rgb(45, 63, 220)', // Replace with your desired color code
       },
     },
   },
