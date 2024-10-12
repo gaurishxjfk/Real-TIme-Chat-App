@@ -1,45 +1,46 @@
 import { clsx } from "clsx";
 import React, { useState } from "react";
 import { UserCardProps } from "../../types/types";
+import { appStore } from "../../store/store";
+import { formatLastActive } from "../../utils/helperfunctions";
 
 const UserCard: React.FC<UserCardProps> = ({
   id,
   username,
   lastSeen,
   onClick,
+  lastMessage,
 }) => {
-  const lastSeenDate = new Date(lastSeen);
-  const currentDate = new Date();
-  const diffTime = Math.abs(currentDate.getTime() - lastSeenDate.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  const { loggedInUser } = appStore(state => state)
   const [toggel, setToggle] = useState(true);
   return (
     <div onClick={onClick}>
       <div
         className={clsx(
-          "flex justify-center  bg-white hover:bg-gray-100 gap-3 p-4 cursor-pointer",
+          "flex bg-white hover:bg-gray-100 gap-3 p-4 cursor-pointer",
           toggel && "border-4 border-primary border-y-0 border-r-0"
         )}
         onClick={() => setToggle(!toggel)}
       >
         <img
-          src={`/user/user_${id % 2 === 0 ? 2 : 1}.svg`}
+          src={`/user/user_${1 % 2 === 0 ? 2 : 1}.svg`}
           alt="user 1 img"
           className="h-12 w-12"
         />
-        <div className="hidden md:flex flex-col">
-          <div className="flex w-full gap-2 text-[16px]">
+        <div className="flex flex-col w-full ">
+          <div className="flex w-full text-[16px] justify-between">
             <h3 className="font-semibold">{username}</h3>
-            <h4 className="text-slate-400">
-              <span>•</span> {diffDays} days
+            <h4 className="text-slate-400  ml-auto">
+              {formatLastActive(lastSeen)}
             </h4>
           </div>
           <div>
             <p className="line-clamp-3 text-[16px] ">
               <span className="font-semibold text-slate-500 tracking-tight ">
-                Krishna:{" "}
+                {loggedInUser?.id === id && "You" }
               </span>{" "}
-              This is the msg that was typed to show in the ui for chat card
+              {lastMessage}
             </p>
           </div>
         </div>

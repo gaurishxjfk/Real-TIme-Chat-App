@@ -42,10 +42,11 @@ export interface AppState {
   loginUser: (userData: LoginrUserData) => Promise<void>;
   fetchAllUsers: () => Promise<void>;
   checkIfLoggedIn: () => void;
-  selectReceiver: (user: Users) => void;
+  selectReceiver: (user: ParticipantObj) => void;
   createMessage: (msgObj:  FormData) => Promise<void>;
   fetchParticipantMessage: (userIds: UserIDs, limit?: number) => Promise<void>;
   getParticipants: (userId : string) => Promise<void>;
+  clearSelectedReceiver: () => void;
 }
 
 
@@ -59,13 +60,17 @@ export interface ParticipantObj {
   user_id: string,
   id?: string,
   status: string,
-  last_active_at:  Date,
-}
+  createdAt:  Date,
+  content: string
+  last_active_at: Date
+  senderId: string
+} 
 
 export interface UserCardProps {
-  id: number;
+  id: string;
   username: string;
   lastSeen: Date;
+  lastMessage: string;
   onClick?: () => void;
 }
 

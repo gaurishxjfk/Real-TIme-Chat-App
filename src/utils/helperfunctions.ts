@@ -29,4 +29,28 @@ export function getLastSeenText(lastSeen: Date): string {
       hour12: true
     });
   }
+
+  export const formatLastActive = (lastActiveAt: string | Date) => {
+    const date = new Date(lastActiveAt);
+    const now = new Date();
+  
+    // Check if the date is today
+    const isToday = date.getDate() === now.getDate() &&
+                    date.getMonth() === now.getMonth() &&
+                    date.getFullYear() === now.getFullYear();
+  
+    if (isToday) {
+      // If it's today, return the time in HH:mm format
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      return `${hours}:${minutes}`;
+    } else {
+      // If it's a past date, return it in dd/mm/yy format
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+      const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+      return `${day}/${month}/${year}`;
+    }
+  };
+  
   

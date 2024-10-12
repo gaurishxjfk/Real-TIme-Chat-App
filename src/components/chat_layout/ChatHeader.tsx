@@ -3,15 +3,24 @@ import { appStore } from "../../store/store";
 import { getLastSeenText } from "../../utils/helperfunctions";
 
 const ChatHeader = () => {
-  const { selectedReceiver } = appStore((state) => state);
+  const { selectedReceiver, clearSelectedReceiver } = appStore(
+    (state) => state
+  );
   return (
     <>
       <div
         className={clsx(
-          "w-full bg-white flex px-4 gap-4 py-2 ",
+          "w-full bg-white flex px-4 gap-4 py-2 items-center",
           "border-b-[1px] border-gray-300"
         )}
       >
+        <button onClick={clearSelectedReceiver}>
+          <img
+            src={`/arrow.svg`}
+            alt="send"
+            className="h-6 rotate-180 md:hidden"
+          />
+        </button>
         <img
           src={`/user/user_${1}.svg`}
           alt="user 1 img"
@@ -34,7 +43,7 @@ const ChatHeader = () => {
           <div>
             <p className=" text-[16px] text-gray-600 ">
               {selectedReceiver?.last_active_at &&
-                getLastSeenText(new Date(selectedReceiver?.last_active_at))}
+                getLastSeenText(new Date(selectedReceiver?.createdAt))}
             </p>
           </div>
         </div>

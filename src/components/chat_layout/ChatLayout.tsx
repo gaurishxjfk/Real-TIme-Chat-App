@@ -10,7 +10,7 @@ const ChatLayout = () => {
 
     //   <ChatInput />
     // </div>
-    <div className="w-full md:w-[70%] h-screen flex flex-col">
+    <div className="h-screen flex flex-col">
       {/* Chat Header - Fixed at the top */}
       <div className="flex-shrink-0">
         <ChatHeader />

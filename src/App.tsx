@@ -28,7 +28,11 @@ function App() {
     <div className={clsx("bg-slate-200 flex", "h-screen overflow-y-hiddden")}>
       {!isLoggedIn && <Login />}
       <Sidebar />
-      {selectedReceiver && selectedReceiver.user_id && <ChatLayout />}
+      <div className={clsx(
+        selectedReceiver?.user_id && "absolute w-full md:relative md:w-[70%]"
+      )}>
+        {selectedReceiver && selectedReceiver.user_id && <ChatLayout />}
+      </div>
     </div>
   );
 }

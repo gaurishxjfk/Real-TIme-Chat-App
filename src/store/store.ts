@@ -12,6 +12,11 @@ export const appStore = create<AppState>()((set, get) => ({
   loggedInUser: null,
   lastCursor: null,
 
+   // clears selected reciver obj
+   clearSelectedReceiver:  () => {
+    set({ selectedReceiver: null, chatData: [], lastCursor: null });
+  },
+
   // on click of user, set user and load their conversation
   selectReceiver: async (user) => {
     const senderId = get().loggedInUser?.id;
