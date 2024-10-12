@@ -29,8 +29,7 @@ const Sidebar = () => {
       username.includes(searchQuery)
     );
     setFilteredUserData(filteredData);
-  }, [searchQuery]);
-
+  }, [searchQuery,userData]);
   return (
     <div className="w-full md:block md:w-[30%]  bg-white relative  border-r-[1px] border-gray-300">
       <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
