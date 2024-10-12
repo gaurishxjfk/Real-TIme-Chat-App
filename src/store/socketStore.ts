@@ -2,11 +2,13 @@ import { create } from "zustand";
 import { SocketStore } from "../types/socket.store";
 import { io } from "socket.io-client";
 
+const domainUrl = import.meta.env.VITE_DOMAIN_URL
+
 export const useSocketStore = create<SocketStore>((set) => ({
   socket: null,
   onlineUsers: [],
   initializeSocket: (userId: string) => {
-    const socket = io("http://localhost:3000", {
+    const socket = io(domainUrl, {
       query: { userId },
     });
     set({ socket });

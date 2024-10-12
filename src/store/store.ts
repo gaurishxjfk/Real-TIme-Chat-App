@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { AppState } from "../types/types";
 
+const domainUrl = import.meta.env.VITE_DOMAIN_URL
+console.log(import.meta.env.VITE_DOMAIN_URL)
+
 export const appStore = create<AppState>()((set, get) => ({
   chatData: [],
   addChat: (chat) => set((state) => ({ chatData: [...state.chatData, chat] })),
@@ -35,7 +38,7 @@ export const appStore = create<AppState>()((set, get) => ({
     set({ loading: true, error: null });
     try {
       const response = await fetch(
-        "http://localhost:3000/users/createmessage",
+        `${domainUrl}/users/createmessage`,
         {
           method: "POST",
           body: formData,
@@ -70,7 +73,7 @@ export const appStore = create<AppState>()((set, get) => ({
     set({ loading: true, error: null });
     try {
       const response = await fetch(
-        `http://localhost:3000/users/fetchchats/${senderId}/${recieverId}?limit=${limit}&cursor=${cursor}`,
+        `${domainUrl}/users/fetchchats/${senderId}/${recieverId}?limit=${limit}&cursor=${cursor}`,
         {
           method: "GET",
           headers: {
@@ -102,7 +105,7 @@ export const appStore = create<AppState>()((set, get) => ({
     set({ loading: true, error: null });
     try {
       const response = await fetch(
-        `http://localhost:3000/users/fetchparticipants/${senderId}`,
+        `${domainUrl}/users/fetchparticipants/${senderId}`,
         {
           method: "GET",
           headers: {
@@ -128,7 +131,7 @@ export const appStore = create<AppState>()((set, get) => ({
     const { username, email, password } = userObj;
     set({ loading: true, error: null });
     try {
-      const response = await fetch("http://localhost:3000/users/create", {
+      const response = await fetch(`${domainUrl}/users/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +155,7 @@ export const appStore = create<AppState>()((set, get) => ({
     const { username, password } = userObj;
     set({ loading: true, error: null });
     try {
-      const response = await fetch("http://localhost:3000/users/login", {
+      const response = await fetch(`${domainUrl}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -187,7 +190,7 @@ export const appStore = create<AppState>()((set, get) => ({
   fetchAllUsers: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await fetch("http://localhost:3000/users/", {
+      const response = await fetch(`${domainUrl}/users/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
