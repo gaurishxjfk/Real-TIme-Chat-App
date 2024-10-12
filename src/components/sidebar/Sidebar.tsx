@@ -36,7 +36,7 @@ const Sidebar = () => {
 
       <div className="relative flex flex-col gap-[1px] custom-scrollbar scroll-smooth overflow-y-scroll h-[90vh] bg-slate-200  border-t-[1px] border-gray-300">
         {userData.length > 0 &&
-          filteredUserData.map((user, j) => (
+          filteredUserData.map((user) => (
             <UserCard
               key={user.user_id}
               id={user.senderId}
