@@ -37,7 +37,7 @@ export interface AppState {
   selectedReceiver: ParticipantObj | null;
   error: string | null;
   lastCursor: null | Date;
-  loggedInUser: null | ParticipantObj;
+  loggedInUser: null | any;
   registerUser: (userData: RegisterUserData) => Promise<void>;
   loginUser: (userData: LoginrUserData) => Promise<void>;
   fetchAllUsers: () => Promise<void>;

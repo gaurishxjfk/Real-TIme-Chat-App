@@ -142,8 +142,10 @@ export const appStore = create<AppState>()((set, get) => ({
       if (!response.ok) {
         throw new Error("Registration failed");
       }
+      const user = await response.json();
+      localStorage.setItem("userObj", JSON.stringify(user));
 
-      set({ loading: false });
+      set({ loading: false, isLoggedIn: true, loggedInUser: user });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       set({ loading: false, error: error });
