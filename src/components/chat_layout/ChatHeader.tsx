@@ -22,9 +22,9 @@ const ChatHeader = () => {
           />
         </button>
         <img
-          src={`/user/user_${1}.svg`}
+          src={selectedReceiver?.profile_image ?? `/user/user_${1}.svg`}
           alt="user 1 img"
-          className="h-12 w-12"
+          className="h-12 w-12 rounded-full border border-blue-500"
         />
         <div className="flex flex-col">
           <div className="flex w-full gap-2 text-[16px] items-center">

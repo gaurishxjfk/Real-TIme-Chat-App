@@ -11,6 +11,7 @@ const Sidebar = () => {
     loggedInUser,
     getParticipants,
     checkIfLoggedIn,
+    selectedReceiver
   } = appStore((state) => state);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,7 +25,7 @@ const Sidebar = () => {
     if (loggedInUser && loggedInUser?.id) {
       getParticipants(loggedInUser.id);
     }
-  }, [loggedInUser]);
+  }, [loggedInUser,selectedReceiver]);
 
   useEffect(() => {
     const filteredData = userData.filter(({ username }) =>
@@ -50,6 +51,7 @@ const Sidebar = () => {
               username={user.username}
               lastSeen={user.createdAt}
               lastMessage={user.content === "NA" ? "Media" : user.content}
+              profile_image={user.profile_image}
               onClick={() => selectReceiver(user)}
             />
           ))}
