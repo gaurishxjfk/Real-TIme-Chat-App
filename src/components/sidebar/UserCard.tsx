@@ -32,7 +32,7 @@ const UserCard: React.FC<UserCardProps> = ({
           <div className="flex w-full text-[16px] justify-between">
             <h3 className="font-semibold">{username}</h3>
             <h4 className="text-slate-400  ml-auto">
-              {formatLastActive(lastSeen)}
+              {lastSeen && formatLastActive(lastSeen)}
             </h4>
           </div>
           <div>

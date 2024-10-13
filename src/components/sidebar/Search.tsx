@@ -8,11 +8,11 @@ const Search = ({
   searchQuery: string
 }) => {
   return (
-    <div className="py-3 flex justify-center items-center ">
+    <div className="py-3 flex justify-center items-center w-full">
       <div
         className={clsx(
           "relative ",
-          "p-2 w-[90%] px-4 h-[6vh] rounded-lg flex items-center",
+          "mx-2 p-2 w-full h-[6vh] rounded-lg flex items-center",
           "border-[1.5px] border-slate-300 bg-slate-100 "
         )}
       >

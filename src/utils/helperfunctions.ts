@@ -1,4 +1,6 @@
 export function getLastSeenText(lastSeen: Date): string {
+  // Check if the date is invalid
+  if (isNaN(lastSeen.getTime())) return ""; 
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - lastSeen.getTime()) / 1000);
   
@@ -52,5 +54,18 @@ export function getLastSeenText(lastSeen: Date): string {
       return `${day}/${month}/${year}`;
     }
   };
+
+
+  
+  export function sortDataByDate(arr: any[]) {
+    return arr.sort((a, b) => {
+      // If 'a' or 'b' doesn't have 'createdAt', move them to the end
+      if (!a.createdAt) return 1;
+      if (!b.createdAt) return -1;
+  
+      // If both have 'createdAt', sort by date in descending order
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
   
   
