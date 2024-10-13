@@ -13,7 +13,7 @@ const Login = () => {
         <h2 className="text-2xl md:text-4xl font-bold text-center text-primary">
           RealTime Chatiffy
         </h2>
-        <p className="text-sm text-slate-600 text-center">
+        <p className="text-sm text-slate-600 text-center hidden">
          <strong>Note:</strong>  The backend is hosted on a <u>free instance of Render</u>, so it may take <strong>1-2 minutes</strong> to respond the first
           time as the service wakes up from its inactive state.
         </p>
