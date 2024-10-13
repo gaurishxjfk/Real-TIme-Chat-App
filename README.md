@@ -1,50 +1,35 @@
-# React + TypeScript + Vite
+# Real-time Chat Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This real-time chat application allows users to engage in instant messaging, providing a smooth and responsive experience. Built with modern web technologies, the app ensures secure and efficient communication with real-time updates.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Instant Messaging:** Send and receive messages in real-time.
+- **Authentication:** Secure login and user management powered by Clerk.
+- **Database Management:** PostgreSQL managed by Supabase for efficient data handling.
+- **Real-Time Communication:** Socket.IO for live conversations.
+- **Responsive UI:** Built with React, TypeScript, and styled with Tailwind CSS for a seamless user experience.
 
-## Expanding the ESLint configuration
+## Demo: https://realtime-chattify.vercel.app/
+![realtimechat](https://github.com/user-attachments/assets/9da350d1-247a-477f-b628-9837dbcd69dd)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
+## Tech Stack
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Frontend
+- **React** (TypeScript)
+- **Tailwind CSS**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Backend
+- **Node.js** (TypeScript)
+- **Express**
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Database
+- **Supabase** (PostgreSQL)
+- **Drizzle ORM**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Real-time Communication
+- **Socket.IO**
+
+### Authentication
+- **Clerk**
