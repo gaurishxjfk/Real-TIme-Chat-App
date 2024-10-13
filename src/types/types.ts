@@ -13,6 +13,7 @@ export interface RegisterUserData {
   username: string;
   email: string;
   password: string;
+  profile_image: string;
 }
 
 export interface LoginrUserData {
@@ -63,7 +64,8 @@ export interface ParticipantObj {
   createdAt:  Date,
   content: string
   last_active_at: Date
-  senderId: string
+  senderId: string;
+  profile_image?: string
 } 
 
 export interface UserCardProps {
@@ -71,6 +73,7 @@ export interface UserCardProps {
   username: string;
   lastSeen: Date;
   lastMessage: string;
+  profile_image?: string
   onClick?: () => void;
 }
 

@@ -128,7 +128,7 @@ export const appStore = create<AppState>()((set, get) => ({
 
   //Register New User
   registerUser: async (userObj) => {
-    const { username, email, password } = userObj;
+    const { username, email, password, profile_image } = userObj;
     set({ loading: true, error: null });
     try {
       const response = await fetch(`${domainUrl}/users/create`, {
@@ -136,7 +136,7 @@ export const appStore = create<AppState>()((set, get) => ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, profile_image }),
       });
 
       if (!response.ok) {

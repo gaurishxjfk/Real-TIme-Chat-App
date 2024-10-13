@@ -10,10 +10,11 @@ const UserCard: React.FC<UserCardProps> = ({
   lastSeen,
   onClick,
   lastMessage,
+  profile_image
 }) => {
 
   const { loggedInUser } = appStore(state => state)
-  const [toggel, setToggle] = useState(true);
+  const [toggel, setToggle] = useState(Boolean(lastMessage));
   return (
     <div onClick={onClick}>
       <div
@@ -24,9 +25,9 @@ const UserCard: React.FC<UserCardProps> = ({
         onClick={() => setToggle(!toggel)}
       >
         <img
-          src={`/user/user_${1 % 2 === 0 ? 2 : 1}.svg`}
+          src={profile_image ?? `/user/user_${1 % 2 === 0 ? 2 : 1}.svg`}
           alt="user 1 img"
-          className="h-12 w-12"
+          className="h-12 w-12 rounded-full border border-blue-500"
         />
         <div className="flex flex-col w-full ">
           <div className="flex w-full text-[16px] justify-between">
@@ -36,11 +37,11 @@ const UserCard: React.FC<UserCardProps> = ({
             </h4>
           </div>
           <div>
-            <p className="line-clamp-3 text-[16px] ">
+            <p className={clsx("line-clamp-3 text-[16px] ",!lastMessage && "text-slate-400" )}>
               <span className="font-semibold text-slate-500 tracking-tight ">
                 {loggedInUser?.id === id && "You" }
               </span>{" "}
-              {lastMessage}
+              {lastMessage ?? "Start new Chat.."}
             </p>
           </div>
         </div>
