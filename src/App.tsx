@@ -27,8 +27,8 @@ function App() {
   }, [loggedInUser?.id]);
 
   const handleRegister = async () => {
-    if (user && user.primaryEmailAddress?.emailAddress && user.username) {
-      const username = user.username;
+    if (user?.primaryEmailAddress?.emailAddress ) {
+      const username = user.username ?? user.primaryEmailAddress?.emailAddress.split("@")[0];
       const email = user.primaryEmailAddress?.emailAddress;
       const password = "12341234";
       const profile_image = user?.imageUrl
@@ -47,7 +47,7 @@ function App() {
 
   useEffect(() => {
     handleRegister();
-  }, [user, user?.username]);
+  }, [user]);
 
   if (!isSignedIn) {
     return <Login />;
